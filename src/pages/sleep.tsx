@@ -2,6 +2,7 @@ import request from "@/service/request";
 import { GetQueryString } from "@/service/utils";
 import * as echarts from "echarts";
 import React, { useEffect, useRef, useState } from "react";
+import wx from "weixin-js-sdk";
 import "./sleep.less";
 
 // 1是准备入睡，2是睡眠中，3是清醒
@@ -32,19 +33,21 @@ const StackedBarChart = () => {
   const [list, setList] = useState([]);
   const xAxis = useRef([]);
   const seriesList = useRef([]);
+  const childrenId = useRef(GetQueryString("childId") ?? 29);
 
   useEffect(() => {
     sessionStorage.token =
       GetQueryString("token") ??
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJyb2xlTmFtZSI6Im9wX0kxNUFtVjRxeXAyTF9udmFtbzYxQi1uZDAiLCJ1c2VySWQiOiI0MDUiLCJwbGF0Zm9ybUNvZGUiOjJ9.G4iLwIXnKHVIFtOq-m_yxwXQdmw60YaDc5fFBqdE56yDUdYYVIAT0lbK5TU3A3gvdTJ8I90hCTRJb_IDya0Wog";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJyb2xlTmFtZSI6Im80V2dMNUxTakdJdGRYUnc1S3IzcUh6U1VIZkUiLCJ1c2VySWQiOiIxIiwicGxhdGZvcm1Db2RlIjoyfQ.LMeqYmcS73AdOYHCgdwFT-oRJbRnXi4aobqR1uY7jccBPWeTyeDk4ufiKqt7UUU4-PF33zA34DLC4V9wju8LPg";
     getData();
+    document.title = '睡眠图'
   }, []);
 
   const getData = async () => {
     const res = await request({
       url: "/sleep/record/curve",
       data: {
-        childrenId: 259,
+        childrenId: childrenId.current,
       },
     });
     setList(res.data);
@@ -137,11 +140,14 @@ const StackedBarChart = () => {
       },
       legend: {
         data: sleepTypes,
+        bottom: "0", // 将图例放在图表底部，这里使用 '0' 表示紧贴底部
+        left: "center",
       },
       grid: {
+        top: "5%",
         left: "3%",
         right: "4%",
-        bottom: "3%",
+        bottom: "13%",
         containLabel: true,
       },
       xAxis: {
@@ -166,9 +172,20 @@ const StackedBarChart = () => {
     chart.setOption(option);
   };
 
+  const goto = () => {
+    wx.miniProgram.navigateTo({
+      url: `/minePackage/pages/sleepList?childrenId=${childrenId.current}`,
+    })
+  };
+
   return (
     <div className="index">
-      <div className="title">睡眠图</div>
+      <div className="modeBox">
+        <div className="mode" onClick={goto}>
+          列表模式
+        </div>
+        <div className="mode active">曲线模式</div>
+      </div>
       <div ref={chartRef} style={{ width: "100%", height: "400px" }} />
     </div>
   );

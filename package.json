@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "lint:fix": "eslint ./src --ext .jsx,.js,.ts,.tsx --quiet --fix --ignore-path ./.gitignore",
     "lint:format": "prettier  --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
@@ -24,7 +24,8 @@
     "react-vant": "^3.3.1",
     "reactutils": "^5.10.0",
     "styled-components": "^5.3.5",
-    "swr": "^1.1.2"
+    "swr": "^1.1.2",
+    "weixin-js-sdk": "^1.6.5"
   },
   "devDependencies": {
     "@types/node": "^17.0.10",
