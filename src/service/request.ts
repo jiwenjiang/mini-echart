@@ -1,7 +1,7 @@
 import { Notify } from 'react-vant';
 
-// const baseUrl = `https://enzeapp.fushuhealth.com/recovery-wx`; // 测试
-const baseUrl = `https://ybsyapp.enzemed.com:8501/recovery-wx`;
+const baseUrl = `https://enzeapp.fushuhealth.com/recovery-wx`; // 测试
+// const baseUrl = `https://ybsyapp.enzemed.com:8501/recovery-wx`;
 
 type httpType = {
   url: string;
